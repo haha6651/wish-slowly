@@ -1,0 +1,6 @@
+{
+  "name": "Wish Slowly",
+  "description": "一个低压力、有情绪温度的陪伴型许愿与微行动产品空间",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
