@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RoomId, UserState, Wish, DiaryEntry, MicroAction, StarlightCard } from './types';
 import { Header } from './components/Header';
+import { LoginScreen } from './components/LoginScreen';
 import { RoomMap } from './components/RoomMap';
 import { DiaryRoom } from './components/rooms/DiaryRoom';
 import { ActionCorner } from './components/rooms/ActionCorner';
@@ -23,6 +24,9 @@ import { INITIAL_STARLIGHT_CARDS } from './data/initialData';
 import { soundPlayer } from './lib/audio';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => localStorage.getItem('wish-slowly-authenticated') === 'true'
+  );
   const [currentRoomId, setCurrentRoomId] = useState<RoomId | null>(null);
 
   // 持久化状态集
@@ -67,6 +71,13 @@ export default function App() {
 
   const handleToggleSound = () => {
     setUserState((prev) => ({ ...prev, soundEnabled: !prev.soundEnabled }));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('wish-slowly-authenticated');
+    setIsAuthenticated(false);
+    setCurrentRoomId(null);
+    soundPlayer.stop();
   };
 
   // 业务动作：新增瞬间日记
@@ -132,6 +143,10 @@ export default function App() {
     );
   };
 
+  if (!isAuthenticated) {
+    return <LoginScreen onLogin={() => setIsAuthenticated(true)} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#FDFBF7] text-[#4A4541]">
       <div>
@@ -142,6 +157,7 @@ export default function App() {
           stardustCount={userState.stardustCount}
           soundEnabled={userState.soundEnabled}
           onToggleSound={handleToggleSound}
+          onLogout={handleLogout}
         />
 
         {/* 房间地图主视图 vs 房间内部单页视图 */}

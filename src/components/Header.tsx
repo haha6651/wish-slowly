@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Volume2, VolumeX, ArrowLeft } from 'lucide-react';
+import { Sparkles, Volume2, VolumeX, ArrowLeft, LogOut } from 'lucide-react';
 import { RoomId } from '../types';
 import { ROOMS } from '../data/initialData';
 
@@ -9,6 +9,7 @@ interface HeaderProps {
   stardustCount: number;
   soundEnabled: boolean;
   onToggleSound: () => void;
+  onLogout: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -17,6 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   stardustCount,
   soundEnabled,
   onToggleSound,
+  onLogout,
 }) => {
   const currentRoom = ROOMS.find((r) => r.id === currentRoomId);
 
@@ -77,6 +79,14 @@ export const Header: React.FC<HeaderProps> = ({
           title={soundEnabled ? '关闭陪伴轻音乐/猫咪呼噜声' : '开启疗愈白噪音'}
         >
           {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+        </button>
+
+        <button
+          onClick={onLogout}
+          className="p-2 rounded-full bg-black/5 text-[#4A4541]/45 hover:text-[#4A4541]/75 transition-colors"
+          title="退出登录"
+        >
+          <LogOut className="w-4 h-4" />
         </button>
       </div>
     </header>
